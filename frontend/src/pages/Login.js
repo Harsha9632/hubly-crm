@@ -31,13 +31,11 @@ const Login = () => {
             const data = await response.json();
 
             if (response.ok) {
-                
                 localStorage.setItem('user', JSON.stringify(data.user));
                 localStorage.setItem('token', data.token);
                 
                 alert('Login successful!');
                 
-               
                 if (data.user.role === 'Admin') {
                     navigate('/admin/dashboard');
                 } else {
@@ -56,10 +54,8 @@ const Login = () => {
 
     return (
         <div className="auth-container">
-            
             <div className="auth-form-section">
                 <div className="auth-form-wrapper">
-                     <div className="auth-form-wrapper auth-login-wrapper"></div>
                     <div className="auth-logo">
                         <img src="/images/hubly-logo.png" alt="Hubly" />
                     </div>
@@ -117,12 +113,9 @@ const Login = () => {
                 </div>
             </div>
 
-            
             <div className="auth-image-section"> 
-                <img src="/images/frame.png" alt="Background" />
+                <img src="/images/Frame.png" alt="Background" />
             </div>
-               
-           
         </div>
     );
 };

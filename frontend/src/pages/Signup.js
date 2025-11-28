@@ -21,7 +21,6 @@ const Signup = () => {
         e.preventDefault();
         setError('');
 
-        
         if (formData.password !== formData.confirmPassword) {
             setError('Passwords do not match');
             return;
@@ -63,7 +62,6 @@ const Signup = () => {
 
     return (
         <div className="auth-container">
-            
             <div className="auth-form-section">
                 <div className="auth-form-wrapper">
                     <div className="auth-logo">
@@ -156,23 +154,21 @@ const Signup = () => {
                                 By creating an account, I agree to our <span className="link-text">Terms of use</span> and <span className="link-text">Privacy Policy</span>
                             </label>
                         </div>
+
                         <button type="submit" className="auth-button" disabled={loading}>
                             {loading ? 'Creating account...' : 'Create an account'}
                         </button>
                     </form>
+
                     <p className="auth-disclaimer">
                         This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
                     </p>
-
                 </div>
             </div>
 
-            
             <div className="auth-image-section">
-                <img src="/images/frame.png" alt="Background" />
+                <img src="/images/Frame.png" alt="Background" />
             </div>
-              
-            
         </div>
     );
 };
