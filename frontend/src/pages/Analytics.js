@@ -4,40 +4,80 @@ import '../styles/Analytics.css';
 
 const Analytics = () => {
   const [hoveredPoint, setHoveredPoint] = useState(null);
-  const [analytics, setAnalytics] = useState({
-    totalChats: 122,
-    resolvedPercentage: 80,
-    averageReplyTime: 0,
-    missedChatsWeekly: [
-      { week: 'Week 1', value: 13 },
-      { week: 'Week 2', value: 8 },
-      { week: 'Week 3', value: 14 },
-      { week: 'Week 4', value: 9 },
-      { week: 'Week 5', value: 5 },
-      { week: 'Week 6', value: 13 },
-      { week: 'Week 7', value: 4 },
-      { week: 'Week 8', value: 9 },
-      { week: 'Week 9', value: 18 },
-      { week: 'Week 10', value: 20 },
-    ]
-  });
+  const [analytics, setAnalytics] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   const loadAnalytics = useCallback(async () => {
     try {
+      setLoading(true);
       const response = await fetch(`${BACKEND_URL}/api/analytics`);
       const data = await response.json();
       setAnalytics(data);
+      setLoading(false);
     } catch (error) {
       console.error('Error loading analytics:', error);
-      // Keep default data if fetch fails
+      // Set default data if API fails
+      setAnalytics({
+        totalChats: 122,
+        resolvedPercentage: 80,
+        averageReplyTime: 0,
+        missedChatsWeekly: [
+          { week: 'Week 1', value: 13 },
+          { week: 'Week 2', value: 8 },
+          { week: 'Week 3', value: 14 },
+          { week: 'Week 4', value: 9 },
+          { week: 'Week 5', value: 5 },
+          { week: 'Week 6', value: 13 },
+          { week: 'Week 7', value: 4 },
+          { week: 'Week 8', value: 9 },
+          { week: 'Week 9', value: 18 },
+          { week: 'Week 10', value: 20 },
+        ]
+      });
+      setLoading(false);
     }
   }, [BACKEND_URL]);
 
   useEffect(() => {
     loadAnalytics();
   }, [loadAnalytics]);
+
+  // Show minimal loading spinner while data loads
+  if (loading || !analytics) {
+    return (
+      <div className="analytics-page">
+        <Sidebar />
+        <div className="analytics-content">
+          <div className="analytics-header">
+            <h1>Analytics</h1>
+          </div>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            minHeight: '400px' 
+          }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              border: '4px solid #f3f4f6',
+              borderTop: '4px solid #41e518',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite'
+            }}></div>
+          </div>
+        </div>
+        <style>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
+      </div>
+    );
+  }
 
   const maxValue = 25;
   const chartHeight = 160;
