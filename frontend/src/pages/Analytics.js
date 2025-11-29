@@ -5,42 +5,33 @@ import '../styles/Analytics.css';
 const Analytics = () => {
   const [hoveredPoint, setHoveredPoint] = useState(null);
   const [analytics, setAnalytics] = useState({
-    totalChats: 0,
-    resolvedPercentage: 0,
+    totalChats: 122,
+    resolvedPercentage: 80,
     averageReplyTime: 0,
-    missedChatsWeekly: []
+    missedChatsWeekly: [
+      { week: 'Week 1', value: 13 },
+      { week: 'Week 2', value: 8 },
+      { week: 'Week 3', value: 14 },
+      { week: 'Week 4', value: 9 },
+      { week: 'Week 5', value: 5 },
+      { week: 'Week 6', value: 13 },
+      { week: 'Week 7', value: 4 },
+      { week: 'Week 8', value: 9 },
+      { week: 'Week 9', value: 18 },
+      { week: 'Week 10', value: 20 },
+    ]
   });
-  const [loading, setLoading] = useState(true);
 
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   const loadAnalytics = useCallback(async () => {
     try {
-      setLoading(true);
       const response = await fetch(`${BACKEND_URL}/api/analytics`);
       const data = await response.json();
       setAnalytics(data);
-      setLoading(false);
     } catch (error) {
       console.error('Error loading analytics:', error);
-      setAnalytics({
-        totalChats: 122,
-        resolvedPercentage: 80,
-        averageReplyTime: 0,
-        missedChatsWeekly: [
-          { week: 'Week 1', value: 13 },
-          { week: 'Week 2', value: 8 },
-          { week: 'Week 3', value: 14 },
-          { week: 'Week 4', value: 9 },
-          { week: 'Week 5', value: 5 },
-          { week: 'Week 6', value: 13 },
-          { week: 'Week 7', value: 4 },
-          { week: 'Week 8', value: 9 },
-          { week: 'Week 9', value: 18 },
-          { week: 'Week 10', value: 20 },
-        ]
-      });
-      setLoading(false);
+      // Keep default data if fetch fails
     }
   }, [BACKEND_URL]);
 
@@ -73,22 +64,6 @@ const Analytics = () => {
   const circumference = 2 * Math.PI * 40;
   const strokeDasharray = `${(analytics.resolvedPercentage / 100) * circumference} ${circumference}`;
 
-  if (loading) {
-    return (
-      <div className="analytics-page">
-        <Sidebar />
-        <div className="analytics-content">
-          <div className="analytics-header">
-            <h1>Analytics</h1>
-          </div>
-          <div style={{ textAlign: 'center', padding: '40px', fontSize: '14px', color: '#6B7280' }}>
-            Loading analytics...
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="analytics-page">
       <Sidebar />
@@ -98,7 +73,6 @@ const Analytics = () => {
           <h1>Analytics</h1>
         </div>
 
-        
         <div className="analytics-card">
           <div className="card-header">
             <h2 className="card-title-green">Missed Chats</h2>
@@ -214,9 +188,7 @@ const Analytics = () => {
           </div>
         </div>
 
-        
         <div className="analytics-grid-2col">
-          
           <div className="analytics-card-compact">
             <h2 className="card-title-green">Average Reply time</h2>
             <div className="metric-row">
@@ -232,7 +204,6 @@ const Analytics = () => {
             </div>
           </div>
 
-         
           <div className="analytics-card-compact">
             <h2 className="card-title-green">Resolved Tickets</h2>
             <div className="metric-row">
@@ -273,7 +244,6 @@ const Analytics = () => {
           </div>
         </div>
 
-        
         <div className="analytics-card-compact">
           <h2 className="card-title-black">Total Chats</h2>
           <div className="metric-row">
